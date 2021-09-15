@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import logo from '../assets/logo-trybe.png';
-import actions from '../actions';
+import { userLogin } from '../actions';
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -47,7 +47,7 @@ const Login = () => {
           value="Entrar"
           disabled={ !(validEmail && validPwd) }
           onClick={ () => {
-            dispatch(actions.userLogin(loginData.email));
+            dispatch(userLogin(loginData.email));
             history.push('/carteira');
           } }
         >

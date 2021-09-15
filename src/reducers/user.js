@@ -4,7 +4,7 @@ const initialState = {
   email: '',
 };
 
-const userReducer = (state = initialState, action) => {
+const user = (state = initialState, action) => {
   switch (action.type) {
   case 'USER_LOGIN':
     return { ...state, email: action.email };
@@ -13,4 +13,4 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-export default userReducer;
+export default user;

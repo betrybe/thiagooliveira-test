@@ -9,11 +9,11 @@ import * as serviceWorker from './serviceWorker';
 import Store from './store';
 
 ReactDOM.render(
-  <Provider store={ Store }>
-    <BrowserRouter>
+  <BrowserRouter>
+    <Provider store={ Store }>
       <App />
-    </BrowserRouter>
-  </Provider>,
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root'),
 );
 
