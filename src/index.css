@@ -48,3 +48,18 @@ code {
   margin-right: 12px;
   margin-left: 12px;
 }
+
+#expenses-form label{
+  margin: 16px;
+  font-family: Tahoma;
+  font-weight: bold;
+}
+
+#expenses-form{
+  display: flex;
+  align-items: center;
+}
+#expenses-form input, select{
+  margin: 0 8px;
+  padding: 4px 8px;
+}

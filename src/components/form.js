@@ -1,38 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrencies } from '../actions';
+import PropTypes from 'prop-types';
+import { getCurrencies, addExpense, editExpense } from '../actions';
 
-const Form = () => {
+const Form = ({ currentEdit, endEditing }) => {
   const dispatch = useDispatch();
 
-  const { currencies, values, expenses } = useSelector((state) => state.wallet);
+  const { currencies, expenses } = useSelector((state) => state.wallet);
 
-  const [selected, setSelected] = useState('USD');
-
-  const [newExpense, setNewExpense] = useState({
-    id: '',
+  const INITIAL_INPUT = {
     value: 0,
     description: '',
     currency: 'USD',
-    method: '',
-    tag: '',
-    exchangeRates: {},
-  });
+    method: 'dinheiro',
+    tag: 'alimentacao',
+  };
 
-  function handleChange({ target }) {
-    setNewExpense({
-      ...newExpense,
-      [target.name]: target.value,
+  const [input, setInput] = useState(INITIAL_INPUT);
+
+  const handleChange = ({ target: { name, value } }) => {
+    setInput({
+      ...input,
+      [name]: value,
     });
-  }
+  };
+
+  const handleSubmit = () => {
+    if (currentEdit >= 0) { // Modo edição
+      dispatch(editExpense(currentEdit, input));
+      endEditing();
+    } else { // Modo adição
+      dispatch(addExpense({
+        id: expenses.length > 0 ? (expenses[expenses.length - 1].id + 1) : 0,
+        ...input,
+      }));
+    }
+    setInput(INITIAL_INPUT);
+  };
+
+  useEffect(() => {
+    if (currentEdit >= 0) setInput(expenses[currentEdit]);
+  }, [currentEdit, expenses]);
 
   useEffect(() => {
     if (!currencies) dispatch(getCurrencies);
-  }, []);
+  });
 
   return (
-    <form onChange={ handleChange } id="expenses-form">
-      <h1>{values ? values[selected].bid : 'Não carregou'}</h1>
+    <form id="expenses-form" className={ `bg-${currentEdit >= 0 ? 'success' : 'light'}` }>
       <label htmlFor="value">
         Valor
         <input
@@ -40,7 +55,8 @@ const Form = () => {
           id="value"
           data-testid="value-input"
           name="value"
-        // value={ newExpense.value }
+          onChange={ handleChange }
+          value={ input.value }
         />
       </label>
       <label htmlFor="description">
@@ -50,7 +66,8 @@ const Form = () => {
           name="description"
           id="description"
           data-testid="description-input"
-          // value={ newExpense.description }
+          onChange={ handleChange }
+          value={ input.description }
         />
       </label>
       <label htmlFor="currency">
@@ -59,8 +76,8 @@ const Form = () => {
           data-testid="currency-input"
           id="currency"
           name="currency"
-          onChange={ ({ target: { value } }) => setSelected(value) }
-        // value={ newExpense.currency }
+          onChange={ handleChange }
+          value={ input.currency }
         >
           {currencies && currencies.map((currency, i) => (
             <option
@@ -78,10 +95,13 @@ const Form = () => {
           data-testid="method-input"
           name="method"
           id="method"
+          onChange={ handleChange }
+          value={ input.method }
         >
-          <option value="dinheiro">Dinheiro</option>
-          <option value="cartao-de-credito">Cartão de crédito</option>
-          <option value="cartao-de-debito">Cartão de débito</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
+
         </select>
       </label>
       <label htmlFor="tag">
@@ -90,32 +110,30 @@ const Form = () => {
           data-testid="tag-input"
           name="tag"
           id="tag"
+          value={ input.tag }
+          onChange={ handleChange }
         >
-          <option value="alimentacao">Alimentação</option>
-          <option value="lazer">Lazer</option>
-          <option value="trabalho">Trabalho</option>
-          <option value="transporte">Transporte</option>
-          <option value="saude">Saúde</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
         </select>
       </label>
-      {/* {editing
-        ? (
-          <button
-            onClick={ sendEditedExpense }
-            type="button"
-          >
-            Editar despesa
-          </button>)
-        : (
-          <button
-            onClick={ handleSendExpenses }
-            type="button"
-          >
-            Adicionar despesa
-          </button>
-        )} */}
+      <button
+        onClick={ handleSubmit }
+        type="button"
+        className="btn btn-primary btn-sm"
+      >
+        {currentEdit >= 0 ? 'Editar despesa' : 'Adicionar despesa'}
+      </button>
     </form>
   );
+};
+
+Form.propTypes = {
+  currentEdit: PropTypes.number.isRequired,
+  endEditing: PropTypes.func.isRequired,
 };
 
 export default Form;

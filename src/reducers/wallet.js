@@ -3,29 +3,46 @@
 const initialState = {
   currencies: null,
   expenses: [],
-  values: null,
 };
 
 const walletReducer = (state = initialState, action) => {
+  const newExpenses = [...state.expenses];
+  const { expenseIndex, newValues, currencies, newArray, expense, expenses } = action;
   switch (action.type) {
   case 'GET_EXPENSES':
     return {
       ...state,
       expenses: [
         ...state.expenses,
-        action.expenses,
+        expenses,
       ],
+    };
+  case 'ADD_EXPENSE':
+    return {
+      ...state,
+      expenses: [...state.expenses, expense],
+    };
+  case 'DELETE_EXPENSE':
+    newExpenses.splice(expenseIndex, 1);
+    return {
+      ...state,
+      expenses: newExpenses,
+    };
+  case 'EDIT_EXPENSE':
+    newExpenses[expenseIndex] = newValues;
+    return {
+      ...state,
+      expenses: newExpenses,
     };
   case 'GET_CURRENCIES':
     return {
       ...state,
-      currencies: action.currencies,
-      values: action.values,
+      currencies,
     };
   case 'NEW_EXPENSE_ARRAY':
     return {
       ...state,
-      expenses: action.newArray,
+      expenses: newArray,
     };
   default:
     return state;

@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import logo from '../assets/logo-trybe.png';
 
 const Header = () => {
   const email = useSelector((state) => state.user.email);
+  const expenses = useSelector((state) => state.wallet.expenses);
+
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    setTotal(expenses.reduce((acc, curr) => {
+      acc += Number(curr.exchangeRates[curr.currency].ask * curr.value);
+      return acc;
+    }, 0));
+  }, [expenses]);
+
   return (
     <div className="fluid-container ">
       <header>
@@ -15,8 +26,10 @@ const Header = () => {
             <span className="mr-5" data-testid="email-field">
               { email }
             </span>
-            <span data-testid="total-field">0</span>
-            <span data-testid="header-currency-field">BRL</span>
+            <span data-testid="total-field">
+              {total.toFixed(2)}
+            </span>
+            <span data-testid="header-currency-field">&nbsp;BRL</span>
           </form>
         </nav>
       </header>
