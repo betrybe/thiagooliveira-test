@@ -10,7 +10,10 @@ const Wallet = () => {
   return (
     <>
       <Header />
-      <Form currentEdit={ currentEdit } endEditing={ () => setCurrentEdit(INITIAL_EMPTY) } />
+      <Form
+        currentEdit={ currentEdit }
+        endEditing={ () => setCurrentEdit(INITIAL_EMPTY) }
+      />
       <Table handleEdit={ setCurrentEdit } />
     </>
   );
