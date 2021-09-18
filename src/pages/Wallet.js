@@ -1,22 +1,9 @@
-import React, { useState } from 'react';
-import Form from '../components/form';
-import Header from '../components/header';
-import Table from '../components/table';
+import React from 'react';
 
-const Wallet = () => {
-  const INITIAL_EMPTY = -1;
-  const [currentEdit, setCurrentEdit] = useState(INITIAL_EMPTY);
-
-  return (
-    <>
-      <Header />
-      <Form
-        currentEdit={ currentEdit }
-        endEditing={ () => setCurrentEdit(INITIAL_EMPTY) }
-      />
-      <Table handleEdit={ setCurrentEdit } />
-    </>
-  );
-};
+class Wallet extends React.Component {
+  render() {
+    return <div>TrybeWallet</div>;
+  }
+}
 
 export default Wallet;
