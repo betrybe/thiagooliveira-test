@@ -25,10 +25,10 @@ jobs:
         id: evaluator
         uses: betrybe/cypress-evaluator-action@v5
         with:
-          repository-test-name: 'betrybe/sd-0x-project-trybewallet-tests'
+          repository-test-name: 'betrybe/sd-0x-project-recipes-app'
           repository-test-branch: 'master'
         env:
-          GITHUB_USER_TEST: ${{ github.actor }} 
+          GITHUB_USER_TEST: ${{ github.actor }}
       - name: Store evaluation step
         uses: betrybe/store-evaluation-action@v2
         with:
