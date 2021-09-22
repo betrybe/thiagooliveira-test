@@ -59,17 +59,7 @@ const Form = ({ currentEdit, endEditing }) => {
           value={ input.value }
         />
       </label>
-      <label htmlFor="description">
-        Descrição
-        <input
-          type="text"
-          name="description"
-          id="description"
-          data-testid="description-input"
-          onChange={ handleChange }
-          value={ input.description }
-        />
-      </label>
+
       <label htmlFor="currency">
         Moeda
         <select
